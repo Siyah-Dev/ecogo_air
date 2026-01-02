@@ -2,6 +2,7 @@ import 'package:exogo/core/extensions/space_extensions.dart';
 import 'package:exogo/core/routes/app_route_names.dart';
 import 'package:exogo/core/theme/app_colors.dart';
 import 'package:exogo/core/utils/validators.dart';
+import 'package:exogo/core/widgets/app_logo.dart';
 import 'package:exogo/features/auth/presentation/providers/auth_controller_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -45,7 +46,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               spacing: 6,
               children: [
                 40.h,
-                Image.asset('assets/images/ecogo.png', height: 50),
+                AppLogo(),
 
                 18.h,
                 const Text(
