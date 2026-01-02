@@ -1,8 +1,7 @@
 import 'dart:io';
-
+import 'package:fpdart/fpdart.dart';
 import 'package:exogo/core/errors/exceptions.dart';
 import 'package:exogo/core/errors/failures.dart';
-import 'package:fpdart/fpdart.dart';
 
 extension FailureHandling on Object {
   Either<Failure, T> toFailure<T>() {
