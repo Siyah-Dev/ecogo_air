@@ -1,5 +1,7 @@
 import 'package:exogo/core/extensions/space_extensions.dart';
-import 'package:exogo/core/utils/bottom_sheet_helper.dart';
+import 'package:exogo/core/routes/app_route_names.dart';
+import 'package:exogo/core/theme/app_colors.dart';
+import 'package:exogo/features/auth/presentation/providers/auth_controller_provider.dart';
 import 'package:exogo/features/home/presentation/providers/home_controller_provider.dart';
 import 'package:exogo/features/home/presentation/widgets/airport_cart.dart';
 import 'package:exogo/features/home/presentation/widgets/app_button.dart';
@@ -8,6 +10,7 @@ import 'package:exogo/features/home/presentation/widgets/preference_section.dart
 import 'package:exogo/features/home/presentation/widgets/trip_selection_wieget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -15,16 +18,23 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeControllerProvider);
+    final authController = ref.read(authControllerProvider.notifier);
+
     final controller = ref.read(homeControllerProvider.notifier);
     final to = ref.watch(homeControllerProvider.select((state) => state.destinationAirport));
     final from = ref.watch(homeControllerProvider.select((state) => state.originAirport));
-    
 
     return Scaffold(
+      backgroundColor: AppColors.lightGrey,
       appBar: CustomAppBar(),
       endDrawer: Drawer(
         child: Center(
-          child: TextButton(onPressed: () {}, child: Text('Logout')),
+          child: TextButton(
+            onPressed: () {
+              authController.signOut();
+            },
+            child: Text('Logout'),
+          ),
         ),
       ),
       body: Padding(
@@ -46,15 +56,20 @@ class HomeScreen extends ConsumerWidget {
                           ? ''
                           : "${from?.cityName} (${from?.airportCode})",
                       subtitle: from?.airportName == null ? '' : "${from?.airportName!}",
-                      isOrigin: true,
-                      
+                      onTap: () {
+                        controller.clearSearchedAirports();
+                        context.push(AppRouteNames.searchScreen, extra: false);
+                      },
                     ),
                     AirportCard(
                       icon: Icons.flight_land_outlined,
                       label: 'To',
                       title: to?.cityName == null ? '' : "${to?.cityName} (${to?.airportCode})",
                       subtitle: to?.airportName == null ? '' : "${to?.airportName!}",
-                     
+                      onTap: () {
+                        controller.clearSearchedAirports();
+                        context.push(AppRouteNames.searchScreen, extra: true);
+                      },
                     ),
                   ],
                 ),

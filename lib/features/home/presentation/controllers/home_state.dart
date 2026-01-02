@@ -1,10 +1,13 @@
-import 'package:exogo/features/home/data/model/airport_model.dart';
+import 'package:exogo/features/home/domain/entities/airport.dart';
 
 class HomeState {
+  final bool isLoading;
   final bool isOneWay;
-  final AirportModel? destinationAirport;
-  final AirportModel? originAirport;
-  final List<AirportModel> availableAirports;
+  final Airport? destinationAirport;
+  final Airport? originAirport;
+  final List<Airport> availableAirports;
+  final String? error;
+  final String? message;
 
   final DateTime departureDate;
   final bool directFlight;
@@ -13,9 +16,12 @@ class HomeState {
 
   const HomeState({
     required this.isOneWay,
+    required this.isLoading,
     required this.destinationAirport,
     required this.originAirport,
     required this.availableAirports,
+    required this.error,
+    required this.message,
 
     required this.departureDate,
     required this.directFlight,
@@ -26,7 +32,8 @@ class HomeState {
   factory HomeState.initial() {
     return HomeState(
       isOneWay: true,
-      destinationAirport: AirportModel(
+      isLoading: false,
+      destinationAirport: Airport(
         airportName: "Bangalore International Airport",
         airportCode: "BLR",
         iataCode: "BLR",
@@ -43,7 +50,7 @@ class HomeState {
         isActive: true,
         id: "f084698f-5db9-41a9-9b32-9c93bdddee83",
       ),
-      originAirport: AirportModel(
+      originAirport: Airport(
         airportName: "Indira Gandhi International Airport",
         airportCode: "DEL",
         iataCode: "DEL",
@@ -61,6 +68,8 @@ class HomeState {
         id: "d290f1ee-6c54-4b01-90e6-d701748f0851",
       ),
       availableAirports: [],
+      error: null,
+      message: null,
       departureDate: DateTime.now(),
       directFlight: true,
       student: false,
@@ -70,9 +79,12 @@ class HomeState {
 
   HomeState copyWith({
     bool? isOneWay,
-    AirportModel? destinationAirport,
-    AirportModel? originAirport,
-    List<AirportModel>? availableAirports,
+    bool? isLoading,
+    Airport? destinationAirport,
+    Airport? originAirport,
+    List<Airport>? availableAirports,
+    String? error,
+    String? message,
     DateTime? departureDate,
     bool? directFlight,
     bool? student,
@@ -80,9 +92,12 @@ class HomeState {
   }) {
     return HomeState(
       isOneWay: isOneWay ?? this.isOneWay,
+      isLoading: isLoading ?? this.isLoading,
       destinationAirport: destinationAirport ?? this.destinationAirport,
       originAirport: originAirport ?? this.originAirport,
       availableAirports: availableAirports ?? this.availableAirports,
+      error: error ?? this.error,
+      message: message ?? this.message,
       departureDate: departureDate ?? this.departureDate,
       directFlight: directFlight ?? this.directFlight,
       student: student ?? this.student,

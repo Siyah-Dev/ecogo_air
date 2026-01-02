@@ -27,12 +27,12 @@ class AuthController extends StateNotifier<AuthState> {
       log('it is error: ${e.code}');
       state = state.copyWith(isLoading: false, error: mapFirebaseError(e.code));
       if (context.mounted) {
-        showErrorSnackbar(context, state.error!);
+        AppSnackBar.showError(context, state.error!);
       }
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
       if (context.mounted) {
-        showErrorSnackbar(context, state.error!);
+        AppSnackBar.showError(context, state.error!);
       }
     }
   }
@@ -51,12 +51,12 @@ class AuthController extends StateNotifier<AuthState> {
     } on FirebaseAuthException catch (e) {
       state = state.copyWith(isLoading: false, error: mapFirebaseError(e.code));
       if (context.mounted) {
-        showErrorSnackbar(context, state.error!);
+        AppSnackBar.showError(context, state.error!);
       }
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
       if (context.mounted) {
-        showErrorSnackbar(context, state.error!);
+        AppSnackBar.showError(context, state.error!);
       }
     }
   }
@@ -69,7 +69,7 @@ class AuthController extends StateNotifier<AuthState> {
 
       state = state.copyWith(isLoading: false, message: 'Password reset link sent to your email');
       if (context.mounted) {
-        showSuccessSnackbar(context, state.message!);
+        AppSnackBar.showSuccess(context, state.message!);
       }
     } on FirebaseAuthException catch (e) {
       state = state.copyWith(
@@ -78,12 +78,12 @@ class AuthController extends StateNotifier<AuthState> {
         
       );
       if (context.mounted) {
-        showErrorSnackbar(context, state.error!);
+        AppSnackBar.showError(context, state.error!);
       }
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
       if (context.mounted) {
-        showErrorSnackbar(context, state.error!);
+        AppSnackBar.showError(context, state.error!);
       }
     }
   }
@@ -92,10 +92,5 @@ class AuthController extends StateNotifier<AuthState> {
     state = state.copyWith(error: null, message: null);
   }
 
-  void showErrorSnackbar(BuildContext context, String error) {
-    AppSnackBar.showError(context, error);
-  }
-  void showSuccessSnackbar(BuildContext context, String message) {
-    AppSnackBar.showSuccess(context, message);
-  }
+  void signOut(){}
 }

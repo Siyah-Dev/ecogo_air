@@ -3,14 +3,15 @@ import 'package:exogo/core/widgets/app_logo.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+  const CustomAppBar({super.key, this.isAutoLeading = false});
+  final bool isAutoLeading ;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: AppColors.white,
       elevation: 0,
-      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: isAutoLeading,
 
       title: const AppLogo(height: 32),
 

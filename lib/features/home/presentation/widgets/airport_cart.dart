@@ -1,18 +1,15 @@
 import 'package:exogo/core/extensions/space_extensions.dart';
 import 'package:exogo/core/theme/app_colors.dart';
-import 'package:exogo/core/utils/bottom_sheet_helper.dart';
-import 'package:exogo/features/home/data/model/airport_model.dart';
-import 'package:exogo/features/home/presentation/providers/home_controller_provider.dart';
 import 'package:exogo/features/home/presentation/widgets/app_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AirportCard extends ConsumerWidget {
+class AirportCard extends StatelessWidget {
   final IconData? icon;
   final String? label;
   final String title;
   final String subtitle;
-  final bool isOrigin;
+  
+  final void Function()? onTap;
 
   const AirportCard({
     super.key,
@@ -20,36 +17,13 @@ class AirportCard extends ConsumerWidget {
     this.label,
     required this.title,
     required this.subtitle,
-    this.isOrigin = false,
+    this.onTap,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final availableAirports = ref.watch(
-      homeControllerProvider.select((state) => state.availableAirports),
-    );
-    final controller = ref.read(homeControllerProvider.notifier);
-
+  Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        showAppBottomSheet(
-          context: context,
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              final airport = availableAirports[index];
-              return ListTile(
-                title: Text("${airport.cityName} (${airport.airportCode})"),
-                subtitle: Text(airport.airportName ?? ''),
-                onTap: () {
-                  controller.setSearchedAirport(isOrigin, airport);
-                  Navigator.of(context).pop();
-                },
-              );
-            },
-            itemCount: availableAirports.length,
-          ),
-        );
-      },
+      onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: AppCard(
         child: Padding(

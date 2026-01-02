@@ -4,6 +4,7 @@ import 'package:exogo/features/auth/presentation/screens/forgot_password_screen.
 import 'package:exogo/features/auth/presentation/screens/login_screen.dart';
 import 'package:exogo/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:exogo/features/home/presentation/screens/home_screen.dart';
+import 'package:exogo/features/home/presentation/screens/search_screen.dart';
 import 'package:exogo/features/splash/presentation/screens/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,6 +39,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(path: AppRouteNames.login, builder: (context, state) => LoginScreen()),
       GoRoute(path: AppRouteNames.forgotPassword, builder: (context, state) =>  ForgotPasswordPage()),
       GoRoute(path: AppRouteNames.homeScreen, builder: (context, state) => const HomeScreen()),
+      GoRoute(path: AppRouteNames.searchScreen, builder: (context, state) {
+        final isDestination = state.extra as bool? ?? false;
+        return SearchScreen(isDestination: isDestination);
+      }),
     ],
   );
 });

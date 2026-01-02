@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class AppBottomSheet extends StatelessWidget {
   final Widget child;
@@ -53,7 +54,7 @@ class AppBottomSheet extends StatelessWidget {
                   if (showCloseIcon)
                     IconButton(
                       icon: const Icon(Icons.close),
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => context.pop(),
                     ),
                 ],
               ),

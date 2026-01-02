@@ -3,10 +3,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final dioProvider = Provider<Dio>((ref) {
+
+
+final flightDioProvider = Provider<Dio>((ref) {
+  return createDio(
+    baseUrl: dotenv.env['FLIGHT_BASE_URL']!,
+  );
+});
+
+final airportDioProvider = Provider<Dio>((ref) {
+  return createDio(
+    baseUrl: dotenv.env['AIRPORT_BASE_URL']!,
+  );
+});
+
+
+Dio createDio({
+  required String baseUrl,
+}) {
   final dio = Dio(
     BaseOptions(
-      baseUrl: dotenv.env['BASE_URL']!,
+      baseUrl: baseUrl,
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       headers: {'Content-Type': 'application/json'},
@@ -28,7 +45,14 @@ final dioProvider = Provider<Dio>((ref) {
     ),
   );
 
-  dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
+  dio.interceptors.add(
+    LogInterceptor(requestBody: true, responseBody: true),
+  );
 
   return dio;
-});
+}
+
+
+
+
+
