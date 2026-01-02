@@ -1,65 +1,101 @@
+import 'dart:developer';
+
+import 'package:exogo/core/errors/firebase_error_maper.dart';
+import 'package:exogo/core/utils/app_snackbar.dart';
+import 'package:exogo/features/auth/domain/repository/auth_repository.dart';
 import 'package:exogo/features/auth/presentation/controllers/auth_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
 class AuthController extends StateNotifier<AuthState> {
-  AuthController(this._auth) : super(const AuthState());
+  final AuthRepository authRepository;
+  AuthController(this.authRepository) : super(const AuthState());
 
-  final FirebaseAuth _auth;
-
-  Future<void> login({
+  Future<void> signUp({
+    required BuildContext context,
     required String email,
     required String password,
   }) async {
     try {
-      state = state.copyWith(
-        isLoading: true,
-        error: null,
-        message: null,
-      );
+      state = state.copyWith(isLoading: true, error: null, message: null);
 
-      await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      await authRepository.signUp(email, password);
 
       state = state.copyWith(isLoading: false);
     } on FirebaseAuthException catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: e.message ?? 'Login failed',
-      );
+      log('it is error: ${e.code}');
+      state = state.copyWith(isLoading: false, error: mapFirebaseError(e.code));
+      if (context.mounted) {
+        showErrorSnackbar(context, state.error!);
+      }
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+      if (context.mounted) {
+        showErrorSnackbar(context, state.error!);
+      }
     }
   }
 
-  Future<void> forgotPassword(String email) async {
-    if (email.isEmpty) {
-      state = state.copyWith(error: 'Please enter email');
-      return;
-    }
-
+  Future<void> login({
+    required BuildContext context,
+    required String email,
+    required String password,
+  }) async {
     try {
-      state = state.copyWith(
-        isLoading: true,
-        error: null,
-        message: null,
-      );
+      state = state.copyWith(isLoading: true, error: null, message: null);
 
-      await _auth.sendPasswordResetEmail(email: email);
+      await authRepository.signIn(email, password);
 
-      state = state.copyWith(
-        isLoading: false,
-        message: 'Password reset link sent to your email',
-      );
+      state = state.copyWith(isLoading: false);
+    } on FirebaseAuthException catch (e) {
+      state = state.copyWith(isLoading: false, error: mapFirebaseError(e.code));
+      if (context.mounted) {
+        showErrorSnackbar(context, state.error!);
+      }
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+      if (context.mounted) {
+        showErrorSnackbar(context, state.error!);
+      }
+    }
+  }
+
+  Future<void> forgotPassword({required BuildContext context, required String email}) async {
+    try {
+      state = state.copyWith(isLoading: true, error: null, message: null);
+
+      await authRepository.forgotPassword(email);
+
+      state = state.copyWith(isLoading: false, message: 'Password reset link sent to your email');
+      if (context.mounted) {
+        showSuccessSnackbar(context, state.message!);
+      }
     } on FirebaseAuthException catch (e) {
       state = state.copyWith(
         isLoading: false,
-        error: e.message ?? 'Failed to send reset link',
+        error: mapFirebaseError(e.code),
+        
       );
+      if (context.mounted) {
+        showErrorSnackbar(context, state.error!);
+      }
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+      if (context.mounted) {
+        showErrorSnackbar(context, state.error!);
+      }
     }
   }
 
   void clearMessages() {
     state = state.copyWith(error: null, message: null);
+  }
+
+  void showErrorSnackbar(BuildContext context, String error) {
+    AppSnackBar.showError(context, error);
+  }
+  void showSuccessSnackbar(BuildContext context, String message) {
+    AppSnackBar.showSuccess(context, message);
   }
 }

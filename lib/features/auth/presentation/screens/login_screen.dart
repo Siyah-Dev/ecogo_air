@@ -84,9 +84,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
 
-                if (state.error != null)
-                  Text(state.error!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
-
                 const Spacer(),
 
                 AuthPrimaryButton(
@@ -97,6 +94,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                     if (!isValid) return;
                     controller.login(
+                      context: context,
                       email: _emailController.text.trim(),
                       password: _passwordController.text.trim(),
                     );

@@ -70,13 +70,16 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
               child: ElevatedButton(
                 onPressed: state.isLoading
                     ? null
-                    : (){final isValid = _formKey.currentState?.validate() ?? false;
+                    : () {
+                        final isValid = _formKey.currentState?.validate() ?? false;
 
-            if (!isValid) return;
+                        if (!isValid) return;
 
-            controller.forgotPassword(
-              _emailController.text.trim(),
-            );},
+                        controller.forgotPassword(
+                          context: context,
+                          email: _emailController.text.trim(),
+                        );
+                      },
                 child: state.isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
                     : const Text('Send Reset Link'),
