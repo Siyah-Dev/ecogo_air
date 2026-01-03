@@ -92,5 +92,7 @@ class AuthController extends StateNotifier<AuthState> {
     state = state.copyWith(error: null, message: null);
   }
 
-  void signOut(){}
+  Future<void> signOut() async {
+    await authRepository.signOut();
+  }
 }
