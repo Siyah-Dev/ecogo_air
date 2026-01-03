@@ -2,7 +2,6 @@ import 'package:exogo/features/auth/data/datasources/remote/firebase_auth_servic
 import 'package:exogo/features/auth/domain/repository/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuthService service;
 

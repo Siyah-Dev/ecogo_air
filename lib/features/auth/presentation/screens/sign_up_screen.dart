@@ -83,7 +83,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     final isValid = _formKey.currentState?.validate() ?? false;
 
                     if (!isValid) return;
-                    controller.signUp(context: context,
+                    controller.signUp(
+                      context: context,
                       email: _emailController.text.trim(),
                       password: _passwordController.text.trim(),
                     );

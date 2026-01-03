@@ -71,7 +71,8 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
                 onPressed: state.isLoading
                     ? null
                     : () {
-                        final isValid = _formKey.currentState?.validate() ?? false;
+                        final isValid =
+                            _formKey.currentState?.validate() ?? false;
 
                         if (!isValid) return;
 
