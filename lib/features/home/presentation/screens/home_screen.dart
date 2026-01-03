@@ -28,11 +28,14 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
-      appBar: CustomAppBar(icon: isFlights? Icons.close:null, onPressed: (){
-        if(isFlights){
-          controller.setIsFlights(false);
-        }
-      },),
+      appBar: CustomAppBar(
+        icon: isFlights ? Icons.close : null,
+        onPressed: () {
+          if (isFlights) {
+            controller.setIsFlights(false);
+          }
+        },
+      ),
       endDrawer: Drawer(
         child: Center(
           child: TextButton(
@@ -45,68 +48,73 @@ class HomeScreen extends ConsumerWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child:isFlights? FlightResultPage(): Column(
-          children: [
-            TripTypeSelector(isOneWay: state.isOneWay, onChanged: (value) {}),
-            16.h,
-            Stack(
-              alignment: Alignment.centerRight,
-              children: [
-                Column(
-                  spacing: 12,
-                  children: [
-                    AirportCard(
-                      icon: Icons.flight_takeoff_outlined,
-                      label: 'From',
-                      title: from?.cityName == null
-                          ? ''
-                          : "${from?.cityName} (${from?.airportCode})",
-                      subtitle: from?.airportName == null ? '' : "${from?.airportName!}",
-                      onTap: () {
-                        controller.clearSearchedAirports();
-                        context.push(AppRouteNames.searchScreen, extra: false);
-                      },
-                    ),
-                    AirportCard(
-                      icon: Icons.flight_land_outlined,
-                      label: 'To',
-                      title: to?.cityName == null ? '' : "${to?.cityName} (${to?.airportCode})",
-                      subtitle: to?.airportName == null ? '' : "${to?.airportName!}",
-                      onTap: () {
-                        controller.clearSearchedAirports();
-                        context.push(AppRouteNames.searchScreen, extra: true);
-                      },
-                    ),
-                  ],
-                ),
-                IconButton(
-                  icon: const Icon(Icons.swap_vert, size: 50),
-                  onPressed: controller.swapAirports,
-                ),
-              ],
-            ),
+        child: isFlights
+            ? FlightResultPage()
+            : Column(
+                children: [
+                  TripTypeSelector(isOneWay: state.isOneWay, onChanged: (value) {}),
+                  16.h,
+                  Stack(
+                    alignment: Alignment.centerRight,
+                    children: [
+                      Column(
+                        spacing: 12,
+                        children: [
+                          AirportCard(
+                            icon: Icons.flight_takeoff_outlined,
+                            label: 'From',
+                            title: from?.cityName == null
+                                ? ''
+                                : "${from?.cityName} (${from?.airportCode})",
+                            subtitle: from?.airportName == null ? '' : "${from?.airportName!}",
+                            onTap: () {
+                              controller.clearSearchedAirports();
+                              context.push(AppRouteNames.searchScreen, extra: false);
+                            },
+                          ),
+                          AirportCard(
+                            icon: Icons.flight_land_outlined,
+                            label: 'To',
+                            title: to?.cityName == null
+                                ? ''
+                                : "${to?.cityName} (${to?.airportCode})",
+                            subtitle: to?.airportName == null ? '' : "${to?.airportName!}",
+                            onTap: () {
+                              controller.clearSearchedAirports();
+                              context.push(AppRouteNames.searchScreen, extra: true);
+                            },
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.swap_vert, size: 50),
+                        onPressed: controller.swapAirports,
+                      ),
+                    ],
+                  ),
 
-            16.h,
+                  16.h,
 
-            PreferencesSection(
-              direct: state.directFlight,
-              student: state.student,
-              senior: state.seniorCitizen,
-              onDirectChanged: controller.toggleDirectFlight,
-              onStudentChanged: controller.toggleStudent,
-              onSeniorChanged: controller.toggleSeniorCitizen,
-            ),
+                  PreferencesSection(
+                    direct: state.directFlight,
+                    student: state.student,
+                    senior: state.seniorCitizen,
+                    onDirectChanged: controller.toggleDirectFlight,
+                    onStudentChanged: controller.toggleStudent,
+                    onSeniorChanged: controller.toggleSeniorCitizen,
+                  ),
 
-            const Spacer(),
+                  const Spacer(),
 
-            AppButton(
-              title: 'SEARCH',
-              onTap: () {
-                controller.setIsFlights(true);
-              },
-            ),
-          ],
-        ),
+                  AppButton(
+                    title: 'SEARCH',
+                    onTap: () {
+                      final uid = ref.read(authControllerProvider).userCred?.user?.uid ?? '';
+                      controller.searchFlights(context, uid);
+                    },
+                  ),
+                ],
+              ),
       ),
     );
   }

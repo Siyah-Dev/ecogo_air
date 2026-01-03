@@ -1,4 +1,5 @@
 import 'package:exogo/features/home/domain/entities/airport.dart';
+import 'package:exogo/features/home/domain/entities/flight_entity.dart';
 
 class HomeState {
   final bool isLoading;
@@ -9,7 +10,7 @@ class HomeState {
   final List<Airport> availableAirports;
   final String? error;
   final String? message;
-
+  final List<FlightEntity> flights;
   final DateTime departureDate;
   final bool directFlight;
   final bool student;
@@ -24,7 +25,7 @@ class HomeState {
     required this.availableAirports,
     required this.error,
     required this.message,
-
+    required this.flights,
     required this.departureDate,
     required this.directFlight,
     required this.student,
@@ -73,6 +74,7 @@ class HomeState {
       availableAirports: [],
       error: null,
       message: null,
+      flights: [],
       departureDate: DateTime.now(),
       directFlight: true,
       student: false,
@@ -89,6 +91,7 @@ class HomeState {
     List<Airport>? availableAirports,
     String? error,
     String? message,
+    List<FlightEntity>? flights,
     DateTime? departureDate,
     bool? directFlight,
     bool? student,
@@ -103,6 +106,7 @@ class HomeState {
       availableAirports: availableAirports ?? this.availableAirports,
       error: error ?? this.error,
       message: message ?? this.message,
+      flights: flights ?? this.flights,
       departureDate: departureDate ?? this.departureDate,
       directFlight: directFlight ?? this.directFlight,
       student: student ?? this.student,

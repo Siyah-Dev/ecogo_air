@@ -43,7 +43,7 @@ class SearchScreen extends ConsumerWidget {
           children: [
             AppSearchBar(
               onChanged: (value) {
-                controller.searchAirport(value);
+                controller.searchAirport(context, value);
               },
             ),
             16.h,

@@ -20,9 +20,9 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       state = state.copyWith(isLoading: true, error: null, message: null);
 
-      await authRepository.signUp(email, password);
+    final userCred =  await authRepository.signUp(email, password);
 
-      state = state.copyWith(isLoading: false);
+      state = state.copyWith(isLoading: false, userCred: userCred);
     } on FirebaseAuthException catch (e) {
       log('it is error: ${e.code}');
       state = state.copyWith(isLoading: false, error: mapFirebaseError(e.code));
@@ -45,9 +45,9 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       state = state.copyWith(isLoading: true, error: null, message: null);
 
-      await authRepository.signIn(email, password);
+     final userCred = await authRepository.signIn(email, password);
 
-      state = state.copyWith(isLoading: false);
+      state = state.copyWith(isLoading: false, userCred: userCred);
     } on FirebaseAuthException catch (e) {
       state = state.copyWith(isLoading: false, error: mapFirebaseError(e.code));
       if (context.mounted) {
