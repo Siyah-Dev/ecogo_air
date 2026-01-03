@@ -3,24 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
-
 final flightDioProvider = Provider<Dio>((ref) {
-  return createDio(
-    baseUrl: dotenv.env['FLIGHT_BASE_URL']!,
-  );
+  return createDio(baseUrl: dotenv.env['FLIGHT_BASE_URL']!);
 });
 
 final airportDioProvider = Provider<Dio>((ref) {
-  return createDio(
-    baseUrl: dotenv.env['AIRPORT_BASE_URL']!,
-  );
+  return createDio(baseUrl: dotenv.env['AIRPORT_BASE_URL']!);
 });
 
-
-Dio createDio({
-  required String baseUrl,
-}) {
+Dio createDio({required String baseUrl}) {
   final dio = Dio(
     BaseOptions(
       baseUrl: baseUrl,
@@ -45,14 +36,7 @@ Dio createDio({
     ),
   );
 
-  dio.interceptors.add(
-    LogInterceptor(requestBody: true, responseBody: true),
-  );
+  dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
 
   return dio;
 }
-
-
-
-
-

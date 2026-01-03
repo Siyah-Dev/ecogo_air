@@ -1,5 +1,3 @@
-
-
 import 'package:exogo/features/home/data/model/flight_model.dart';
 import 'package:exogo/features/home/domain/entities/flight_entity.dart';
 import 'package:exogo/features/home/domain/entities/segment_entity.dart';

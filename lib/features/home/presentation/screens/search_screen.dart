@@ -50,33 +50,38 @@ class SearchScreen extends ConsumerWidget {
             if (isLoading)
               Expanded(child: SearchShimmerList())
             else
-            availableAirports.isEmpty
-                ?Center(child: Text('No Airports Found')) 
-                : Expanded(
-                    child: ListView.builder(
-                      itemBuilder: (context, index) {
-                        final airport = availableAirports[index];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          child: ListTile(
-                            tileColor: AppColors.white,
-                            titleTextStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primaryBlue,
+              availableAirports.isEmpty
+                  ? Center(child: Text('No Airports Found'))
+                  : Expanded(
+                      child: ListView.builder(
+                        itemBuilder: (context, index) {
+                          final airport = availableAirports[index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: ListTile(
+                              tileColor: AppColors.white,
+                              titleTextStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primaryBlue,
+                              ),
+                              title: Text(
+                                "${airport.cityName} (${airport.airportCode})",
+                              ),
+                              subtitle: Text(airport.airportName ?? ''),
+                              onTap: () {
+                                controller.setSearchedAirport(
+                                  isDestination,
+                                  airport,
+                                );
+                                context.pop();
+                              },
                             ),
-                            title: Text("${airport.cityName} (${airport.airportCode})"),
-                            subtitle: Text(airport.airportName ?? ''),
-                            onTap: () {
-                              controller.setSearchedAirport(isDestination, airport);
-                              context.pop();
-                            },
-                          ),
-                        );
-                      },
-                      itemCount: availableAirports.length,
+                          );
+                        },
+                        itemCount: availableAirports.length,
+                      ),
                     ),
-                  ),
           ],
         ),
       ),

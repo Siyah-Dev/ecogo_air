@@ -20,7 +20,7 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       state = state.copyWith(isLoading: true, error: null, message: null);
 
-    final userCred =  await authRepository.signUp(email, password);
+      final userCred = await authRepository.signUp(email, password);
 
       state = state.copyWith(isLoading: false, userCred: userCred);
     } on FirebaseAuthException catch (e) {
@@ -45,7 +45,7 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       state = state.copyWith(isLoading: true, error: null, message: null);
 
-     final userCred = await authRepository.signIn(email, password);
+      final userCred = await authRepository.signIn(email, password);
 
       state = state.copyWith(isLoading: false, userCred: userCred);
     } on FirebaseAuthException catch (e) {
@@ -61,22 +61,24 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> forgotPassword({required BuildContext context, required String email}) async {
+  Future<void> forgotPassword({
+    required BuildContext context,
+    required String email,
+  }) async {
     try {
       state = state.copyWith(isLoading: true, error: null, message: null);
 
       await authRepository.forgotPassword(email);
 
-      state = state.copyWith(isLoading: false, message: 'Password reset link sent to your email');
+      state = state.copyWith(
+        isLoading: false,
+        message: 'Password reset link sent to your email',
+      );
       if (context.mounted) {
         AppSnackBar.showSuccess(context, state.message!);
       }
     } on FirebaseAuthException catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: mapFirebaseError(e.code),
-        
-      );
+      state = state.copyWith(isLoading: false, error: mapFirebaseError(e.code));
       if (context.mounted) {
         AppSnackBar.showError(context, state.error!);
       }

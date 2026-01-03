@@ -8,7 +8,7 @@ class AirportCard extends StatelessWidget {
   final String? label;
   final String title;
   final String subtitle;
-  
+
   final void Function()? onTap;
 
   const AirportCard({
@@ -56,11 +56,20 @@ class AirportCard extends StatelessWidget {
 
                     4.h,
 
-                    Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
 
                     2.h,
 
-                    Text(subtitle, style: TextStyle(fontSize: 13, color: AppColors.grey)),
+                    Text(
+                      subtitle,
+                      style: TextStyle(fontSize: 13, color: AppColors.grey),
+                    ),
                   ],
                 ),
               ),

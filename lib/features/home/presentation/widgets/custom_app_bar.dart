@@ -3,7 +3,12 @@ import 'package:exogo/core/widgets/app_logo.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key, this.isAutoLeading = false, this.icon = Icons.menu, this.onPressed});
+  const CustomAppBar({
+    super.key,
+    this.isAutoLeading = false,
+    this.icon = Icons.menu,
+    this.onPressed,
+  });
   final bool isAutoLeading;
   final IconData? icon;
   final void Function()? onPressed;

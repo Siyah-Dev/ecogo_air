@@ -6,7 +6,11 @@ class DioApiService implements BaseApiService {
   final Dio dio;
 
   @override
-  Future<Response> getRequest(String url, {Map<String, dynamic>? queryParams, dynamic data}) async {
+  Future<Response> getRequest(
+    String url, {
+    Map<String, dynamic>? queryParams,
+    dynamic data,
+  }) async {
     return await dio.get(url, queryParameters: queryParams, data: data);
   }
 

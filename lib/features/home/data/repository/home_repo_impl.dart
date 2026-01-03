@@ -10,7 +10,6 @@ import 'package:fpdart/fpdart.dart';
 
 import '../../domain/entities/airport.dart';
 
-
 class HomeRepoImpl implements HomeRepository {
   final AirportRemoteDatasource airportDataSource;
   final FlightRemoteDatasource flightDataSource;
@@ -18,9 +17,7 @@ class HomeRepoImpl implements HomeRepository {
   HomeRepoImpl(this.airportDataSource, this.flightDataSource);
 
   @override
-  Future<Either<Failure, List<Airport>>> searchAirports(
-    String keyword,
-  ) async {
+  Future<Either<Failure, List<Airport>>> searchAirports(String keyword) async {
     try {
       final airports = await airportDataSource.searchAirports(keyword);
       return Right(airports);
@@ -32,7 +29,9 @@ class HomeRepoImpl implements HomeRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> searchFlights(FlightSearchRequestModel request) async{
+  Future<Either<Failure, bool>> searchFlights(
+    FlightSearchRequestModel request,
+  ) async {
     try {
       final isSuccess = await flightDataSource.searchFlights(request);
       return Right(isSuccess);
@@ -44,7 +43,7 @@ class HomeRepoImpl implements HomeRepository {
   }
 
   @override
-  Future<Either<Failure, List<FlightEntity>>> getFlights(String tui)async {
+  Future<Either<Failure, List<FlightEntity>>> getFlights(String tui) async {
     try {
       final flights = await flightDataSource.getFlights(tui);
       return Right(flights.map((e) => e.toEntity()).toList());
@@ -54,5 +53,4 @@ class HomeRepoImpl implements HomeRepository {
       return Left(UnknownFailure(e.message));
     }
   }
-
 }

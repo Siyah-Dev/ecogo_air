@@ -1,6 +1,8 @@
 class ServiceExceptions implements Exception {
   final String message;
-  const ServiceExceptions([this.message = 'Something went wrong on the server']);
+  const ServiceExceptions([
+    this.message = 'Something went wrong on the server',
+  ]);
   @override
   String toString() => message;
 }

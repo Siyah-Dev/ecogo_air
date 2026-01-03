@@ -21,7 +21,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           state.matchedLocation == AppRouteNames.login ||
           state.matchedLocation == AppRouteNames.forgotPassword ||
           state.matchedLocation == AppRouteNames.signUp;
-      
 
       if (user == null && !isAuthRoute) {
         return AppRouteNames.login;
@@ -34,15 +33,33 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       return null;
     },
     routes: [
-      GoRoute(path: AppRouteNames.splash, builder: (context, state) => const SplashScreen()),
-      GoRoute(path: AppRouteNames.signUp, builder: (context, state) => SignUpScreen()),
-      GoRoute(path: AppRouteNames.login, builder: (context, state) => LoginScreen()),
-      GoRoute(path: AppRouteNames.forgotPassword, builder: (context, state) =>  ForgotPasswordPage()),
-      GoRoute(path: AppRouteNames.homeScreen, builder: (context, state) => const HomeScreen()),
-      GoRoute(path: AppRouteNames.searchScreen, builder: (context, state) {
-        final isDestination = state.extra as bool? ?? false;
-        return SearchScreen(isDestination: isDestination);
-      }),
+      GoRoute(
+        path: AppRouteNames.splash,
+        builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: AppRouteNames.signUp,
+        builder: (context, state) => SignUpScreen(),
+      ),
+      GoRoute(
+        path: AppRouteNames.login,
+        builder: (context, state) => LoginScreen(),
+      ),
+      GoRoute(
+        path: AppRouteNames.forgotPassword,
+        builder: (context, state) => ForgotPasswordPage(),
+      ),
+      GoRoute(
+        path: AppRouteNames.homeScreen,
+        builder: (context, state) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: AppRouteNames.searchScreen,
+        builder: (context, state) {
+          final isDestination = state.extra as bool? ?? false;
+          return SearchScreen(isDestination: isDestination);
+        },
+      ),
     ],
   );
 });

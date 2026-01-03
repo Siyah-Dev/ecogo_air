@@ -19,7 +19,9 @@ class AuthPrimaryButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
-        child: isLoading ? const CircularProgressIndicator(color: Colors.white) : Text(text),
+        child: isLoading
+            ? const CircularProgressIndicator(color: Colors.white)
+            : Text(text),
       ),
     );
   }

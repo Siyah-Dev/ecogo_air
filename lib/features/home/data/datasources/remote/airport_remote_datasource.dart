@@ -8,26 +8,23 @@ class AirportRemoteDatasource {
 
   final Dio _dio;
 
-  Future<List<AirportModel>> searchAirports(String keyword) async{
-   try {
-     final response = await  _dio.get('airports/search', queryParameters: {
-      'q': keyword,
-    });
-
-    if(response.statusCode == 200){
-      final data = response.data as List;
-      return data.map((e) => AirportModel.fromJson(e)).toList();
-   }else{
-      throw ServiceExceptions(
-           'Failed to fetch airport data',
-        );
-   }
-   } on DioException catch (e) {
-      throw ServiceExceptions(
-        DioExceptionHandler.handle(e: e),
+  Future<List<AirportModel>> searchAirports(String keyword) async {
+    try {
+      final response = await _dio.get(
+        'airports/search',
+        queryParameters: {'q': keyword},
       );
-   }catch (e) {
-     throw UnknownExceptions('Unexpected error');
-   }
+
+      if (response.statusCode == 200) {
+        final data = response.data as List;
+        return data.map((e) => AirportModel.fromJson(e)).toList();
+      } else {
+        throw ServiceExceptions('Failed to fetch airport data');
+      }
+    } on DioException catch (e) {
+      throw ServiceExceptions(DioExceptionHandler.handle(e: e));
+    } catch (e) {
+      throw UnknownExceptions('Unexpected error');
+    }
   }
 }

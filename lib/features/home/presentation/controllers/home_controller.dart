@@ -5,6 +5,7 @@ import 'package:exogo/features/home/data/model/post_trip_model.dart';
 import 'package:exogo/features/home/domain/entities/airport.dart';
 import 'package:exogo/features/home/domain/use_case/home_use_case.dart';
 import 'package:exogo/features/home/presentation/controllers/home_state.dart';
+import 'package:exogo/features/home/presentation/model/flight_ui_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
@@ -66,7 +67,7 @@ class HomeController extends StateNotifier<HomeState> {
   }
 
   Future<void> searchFlights(BuildContext context, String uid) async {
-    state = state.copyWith(isLoading: true);
+    state = state.copyWith(isLoading: true, isFlights: true);
     final params = PostParamsModel(isDirect: state.directFlight);
 
     final trips = PostTripModel(
@@ -87,8 +88,11 @@ class HomeController extends StateNotifier<HomeState> {
 
     result.fold(
       (failure) {
-        state = state.copyWith(error: failure.message);
-        state = state.copyWith(isLoading: false);
+        state = state.copyWith(
+          isFlights: false,
+          error: failure.message,
+          isLoading: false,
+        );
         AppSnackBar.showError(context, state.error!);
       },
       (isSuccess) {
@@ -104,14 +108,37 @@ class HomeController extends StateNotifier<HomeState> {
 
     result.fold(
       (failure) {
-        state = state.copyWith(error: failure.message);
-        state = state.copyWith(isLoading: false);
+        state = state.copyWith(
+          isFlights: false,
+          error: failure.message,
+          isLoading: false,
+        );
+
         AppSnackBar.showError(context, state.error!);
       },
       (flights) {
-        state = state.copyWith(flights: flights);
-        setIsFlights(true);
-        state = state.copyWith(isLoading: false);
+        final List<FlightUiModel> uiFlights = [];
+
+        for (final flight in flights) {
+          for (final trip in flight.trips) {
+            for (final segment in trip.segments) {
+              uiFlights.add(
+                FlightUiModel(
+                  airline: segment.airline,
+                  flightNumber: segment.flightNumber,
+                  from: segment.from,
+                  to: segment.to,
+                  departureTime: segment.departureTime,
+                  arrivalTime: segment.arrivalTime,
+                  duration: segment.duration,
+                  isNonStop: segment.stops == 0,
+                  price: trip.totalFare,
+                ),
+              );
+            }
+          }
+        }
+        state = state.copyWith(flights: uiFlights, isLoading: false);
       },
     );
   }

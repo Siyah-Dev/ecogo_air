@@ -5,7 +5,6 @@ import 'package:exogo/features/home/domain/repository/home_repository.dart';
 import 'package:fpdart/fpdart.dart';
 import '../entities/airport.dart';
 
-
 class HomeUseCase {
   final HomeRepository repository;
 
@@ -15,9 +14,12 @@ class HomeUseCase {
     return repository.searchAirports(keyword);
   }
 
-  Future<Either<Failure, bool>> searchFlights(FlightSearchRequestModel request) {
+  Future<Either<Failure, bool>> searchFlights(
+    FlightSearchRequestModel request,
+  ) {
     return repository.searchFlights(request);
   }
+
   Future<Either<Failure, List<FlightEntity>>> getFlights(String tui) {
     return repository.getFlights(tui);
   }

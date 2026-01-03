@@ -22,9 +22,7 @@ class AppBottomSheet extends StatelessWidget {
         height: height,
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
         decoration: const BoxDecoration(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(16),
-          ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -61,7 +59,6 @@ class AppBottomSheet extends StatelessWidget {
 
             if (title != null) const SizedBox(height: 8),
 
-         
             Expanded(child: child),
           ],
         ),

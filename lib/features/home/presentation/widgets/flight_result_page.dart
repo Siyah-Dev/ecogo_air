@@ -1,13 +1,42 @@
+import 'package:exogo/features/home/presentation/providers/home_controller_provider.dart';
 import 'package:exogo/features/home/presentation/widgets/flight_result_card.dart';
+import 'package:exogo/features/home/presentation/widgets/search_shimmer_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FlightResultPage extends StatelessWidget {
+class FlightResultPage extends ConsumerWidget {
   const FlightResultPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ListView.builder(itemCount: 10, itemBuilder: (context, index) {
-      return FlightResultCard(airlineName: 'airlineName', flightNumber: 'flightNumber', fromCode: 'fromCode', toCode: 'toCode', departureTime: '06:30', arrivalTime: '08:45', departureDate: '3 JAN', arrivalDate: '4 JAN', duration: '12 h 30 m', price: '4444', isNonStop: true, airlineLogoAsset: 'airlineLogoAsset');
-    },);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isLoading = ref.watch(
+      homeControllerProvider.select((state) => state.isLoading),
+    );
+    final flights = ref.watch(
+      homeControllerProvider.select((state) => state.flights),
+    );
+    return isLoading
+        ? SearchShimmerList(height: 200, itemCount: 4) :flights.isEmpty? Center(
+            child: Text('No Flights Found'),
+          )
+        : ListView.builder(
+            itemCount: 10,
+            itemBuilder: (context, index) {
+              final flight = flights[index];
+              return FlightResultCard(
+                airlineName: flight.airline,
+                flightNumber: flight.flightNumber,
+                fromCode: flight.from,
+                toCode: flight.to,
+                departureTime: flight.departureTime,
+                arrivalTime: flight.arrivalTime,
+                departureDate: '3 JAN',
+                arrivalDate: '4 JAN',
+                duration: flight.duration.toString(),
+                price: flight.price.toString(),
+                isNonStop: flight.isNonStop,
+              );
+            },
+          );
   }
 }

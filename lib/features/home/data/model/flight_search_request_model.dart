@@ -1,7 +1,6 @@
 import 'package:exogo/features/home/data/model/post_params_model.dart';
 import 'package:exogo/features/home/data/model/post_trip_model.dart';
 
-
 class FlightSearchRequestModel {
   final int adt;
   final int chd;

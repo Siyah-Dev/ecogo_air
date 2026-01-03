@@ -15,9 +15,7 @@ Future<void> showAppBottomSheet({
     isDismissible: isDismissible,
     enableDrag: enableDrag,
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(
-        top: Radius.circular(16),
-      ),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
     builder: (_) => AppBottomSheet(
       title: title,

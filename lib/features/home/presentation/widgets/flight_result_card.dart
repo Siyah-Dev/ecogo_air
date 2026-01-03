@@ -13,7 +13,7 @@ class FlightResultCard extends StatelessWidget {
   final String duration;
   final String price;
   final bool isNonStop;
-  final String airlineLogoAsset;
+  final String? airlineLogoAsset;
 
   const FlightResultCard({
     super.key,
@@ -28,40 +28,32 @@ class FlightResultCard extends StatelessWidget {
     required this.duration,
     required this.price,
     required this.isNonStop,
-    required this.airlineLogoAsset,
+    this.airlineLogoAsset,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-          
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
-                    Image.asset(
-                      airlineLogoAsset,
-                      height: 32,
-                      width: 32,
-                    ),
+                    if (airlineLogoAsset != null)
+                      Image.asset(airlineLogoAsset!, height: 32, width: 32),
                     8.w,
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           airlineName,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                         Text(
                           flightNumber,
@@ -76,8 +68,7 @@ class FlightResultCard extends StatelessWidget {
                 ),
                 Row(
                   children: const [
-                    Icon(Icons.shopping_bag_outlined,
-                        color: Colors.green),
+                    Icon(Icons.shopping_bag_outlined, color: Colors.green),
                     SizedBox(width: 8),
                     Icon(Icons.luggage_outlined, color: Colors.green),
                   ],
@@ -102,12 +93,9 @@ class FlightResultCard extends StatelessWidget {
                     children: [
                       Text(
                         duration,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       ),
-                     6.h,
+                      6.h,
                       Row(
                         children: const [
                           Expanded(child: Divider()),
@@ -120,10 +108,7 @@ class FlightResultCard extends StatelessWidget {
                       6.h,
                       Text(
                         isNonStop ? 'Non-stop' : 'Stops',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       ),
                     ],
                   ),
@@ -188,33 +173,19 @@ class _TimeColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment:
-          alignStart ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+      crossAxisAlignment: alignStart
+          ? CrossAxisAlignment.start
+          : CrossAxisAlignment.end,
       children: [
         Text(
           time,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
         2.h,
-        Text(
-          date,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey[600],
-          ),
-        ),
+        Text(date, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
         2.h,
-        Text(
-          code,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        Text(code, style: const TextStyle(fontWeight: FontWeight.w600)),
       ],
     );
   }
 }
-

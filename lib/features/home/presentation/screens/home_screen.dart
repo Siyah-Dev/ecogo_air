@@ -13,26 +13,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(homeControllerProvider);
     final authController = ref.read(authControllerProvider.notifier);
 
     final controller = ref.read(homeControllerProvider.notifier);
-    final to = ref.watch(homeControllerProvider.select((state) => state.destinationAirport));
-    final from = ref.watch(homeControllerProvider.select((state) => state.originAirport));
-    final isFlights = ref.watch(homeControllerProvider.select((state) => state.isFlights));
+    final to = ref.watch(
+      homeControllerProvider.select((state) => state.destinationAirport),
+    );
+    final from = ref.watch(
+      homeControllerProvider.select((state) => state.originAirport),
+    );
+    final isFlights = ref.watch(
+      homeControllerProvider.select((state) => state.isFlights),
+    );
 
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: AppColors.lightGrey,
       appBar: CustomAppBar(
-        icon: isFlights ? Icons.close : null,
+        icon: isFlights ? Icons.close : Icons.menu,
         onPressed: () {
           if (isFlights) {
             controller.setIsFlights(false);
+          } else {
+            _scaffoldKey.currentState?.openEndDrawer();
           }
         },
       ),
@@ -52,7 +68,10 @@ class HomeScreen extends ConsumerWidget {
             ? FlightResultPage()
             : Column(
                 children: [
-                  TripTypeSelector(isOneWay: state.isOneWay, onChanged: (value) {}),
+                  TripTypeSelector(
+                    isOneWay: state.isOneWay,
+                    onChanged: (value) {},
+                  ),
                   16.h,
                   Stack(
                     alignment: Alignment.centerRight,
@@ -66,10 +85,15 @@ class HomeScreen extends ConsumerWidget {
                             title: from?.cityName == null
                                 ? ''
                                 : "${from?.cityName} (${from?.airportCode})",
-                            subtitle: from?.airportName == null ? '' : "${from?.airportName!}",
+                            subtitle: from?.airportName == null
+                                ? ''
+                                : "${from?.airportName!}",
                             onTap: () {
                               controller.clearSearchedAirports();
-                              context.push(AppRouteNames.searchScreen, extra: false);
+                              context.push(
+                                AppRouteNames.searchScreen,
+                                extra: false,
+                              );
                             },
                           ),
                           AirportCard(
@@ -78,10 +102,15 @@ class HomeScreen extends ConsumerWidget {
                             title: to?.cityName == null
                                 ? ''
                                 : "${to?.cityName} (${to?.airportCode})",
-                            subtitle: to?.airportName == null ? '' : "${to?.airportName!}",
+                            subtitle: to?.airportName == null
+                                ? ''
+                                : "${to?.airportName!}",
                             onTap: () {
                               controller.clearSearchedAirports();
-                              context.push(AppRouteNames.searchScreen, extra: true);
+                              context.push(
+                                AppRouteNames.searchScreen,
+                                extra: true,
+                              );
                             },
                           ),
                         ],
@@ -109,7 +138,13 @@ class HomeScreen extends ConsumerWidget {
                   AppButton(
                     title: 'SEARCH',
                     onTap: () {
-                      final uid = ref.read(authControllerProvider).userCred?.user?.uid ?? '';
+                      final uid =
+                          ref
+                              .read(authControllerProvider)
+                              .userCred
+                              ?.user
+                              ?.uid ??
+                          '';
                       controller.searchFlights(context, uid);
                     },
                   ),
