@@ -6,6 +6,7 @@ import 'package:exogo/features/home/presentation/providers/home_controller_provi
 import 'package:exogo/features/home/presentation/widgets/airport_cart.dart';
 import 'package:exogo/features/home/presentation/widgets/app_button.dart';
 import 'package:exogo/features/home/presentation/widgets/custom_app_bar.dart';
+import 'package:exogo/features/home/presentation/widgets/flight_result_page.dart';
 import 'package:exogo/features/home/presentation/widgets/preference_section.dart';
 import 'package:exogo/features/home/presentation/widgets/trip_selection_wieget.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +24,15 @@ class HomeScreen extends ConsumerWidget {
     final controller = ref.read(homeControllerProvider.notifier);
     final to = ref.watch(homeControllerProvider.select((state) => state.destinationAirport));
     final from = ref.watch(homeControllerProvider.select((state) => state.originAirport));
+    final isFlights = ref.watch(homeControllerProvider.select((state) => state.isFlights));
 
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
-      appBar: CustomAppBar(),
+      appBar: CustomAppBar(icon: isFlights? Icons.close:null, onPressed: (){
+        if(isFlights){
+          controller.setIsFlights(false);
+        }
+      },),
       endDrawer: Drawer(
         child: Center(
           child: TextButton(
@@ -39,7 +45,7 @@ class HomeScreen extends ConsumerWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
+        child:isFlights? FlightResultPage(): Column(
           children: [
             TripTypeSelector(isOneWay: state.isOneWay, onChanged: (value) {}),
             16.h,
@@ -96,7 +102,7 @@ class HomeScreen extends ConsumerWidget {
             AppButton(
               title: 'SEARCH',
               onTap: () {
-                // trigger search use case
+                controller.setIsFlights(true);
               },
             ),
           ],

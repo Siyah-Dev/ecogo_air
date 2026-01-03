@@ -55,5 +55,9 @@ class HomeController extends StateNotifier<HomeState> {
     );
   }
 
+  void setIsFlights(bool value) {
+    state = state.copyWith(isFlights: value);
+  }
+
   
 }

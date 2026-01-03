@@ -3,6 +3,7 @@ import 'package:exogo/features/home/domain/entities/airport.dart';
 class HomeState {
   final bool isLoading;
   final bool isOneWay;
+  final bool isFlights;
   final Airport? destinationAirport;
   final Airport? originAirport;
   final List<Airport> availableAirports;
@@ -17,6 +18,7 @@ class HomeState {
   const HomeState({
     required this.isOneWay,
     required this.isLoading,
+    required this.isFlights,
     required this.destinationAirport,
     required this.originAirport,
     required this.availableAirports,
@@ -33,6 +35,7 @@ class HomeState {
     return HomeState(
       isOneWay: true,
       isLoading: false,
+      isFlights: false,
       destinationAirport: Airport(
         airportName: "Bangalore International Airport",
         airportCode: "BLR",
@@ -80,6 +83,7 @@ class HomeState {
   HomeState copyWith({
     bool? isOneWay,
     bool? isLoading,
+    bool? isFlights,
     Airport? destinationAirport,
     Airport? originAirport,
     List<Airport>? availableAirports,
@@ -93,6 +97,7 @@ class HomeState {
     return HomeState(
       isOneWay: isOneWay ?? this.isOneWay,
       isLoading: isLoading ?? this.isLoading,
+      isFlights: isFlights ?? this.isFlights,
       destinationAirport: destinationAirport ?? this.destinationAirport,
       originAirport: originAirport ?? this.originAirport,
       availableAirports: availableAirports ?? this.availableAirports,
